@@ -4,7 +4,13 @@
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickView>
 
-#include "controller/controller.hpp"
+#include "controller/complex_number_controller.hpp"
+#include "controller/fraction_number_controller.hpp"
+#include "controller/p_number_controller.hpp"
+
+#include "model/number/complex_number.hpp"
+#include "model/number/fraction_number.hpp"
+#include "model/number/p_number.hpp"
 
 auto main(int argc, char *argv[]) -> int
 {
@@ -12,9 +18,17 @@ auto main(int argc, char *argv[]) -> int
     QQmlApplicationEngine engine {};
 
     QGuiApplication::setOrganizationName("NSTU");
-    QGuiApplication::setApplicationName("Calculator");
+    QGuiApplication::setApplicationName("UniversalCalculator");
 
-    engine.rootContext()->setContextProperty("Controller",   Controller::getInstance());
+    ComplexNumberController  complexNumberController;
+    FractionNumberController fractionNumberController;
+    PNumberController        pNumberController;
+
+    auto ctx = engine.rootContext();
+
+    ctx->setContextProperty("complexNumberController",  &complexNumberController);
+    ctx->setContextProperty("fractionNumberController", &fractionNumberController);
+    ctx->setContextProperty("pNumberController",        &pNumberController);
 
     const QUrl url{u"qrc:Converter/view/main.qml"_qs};
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,

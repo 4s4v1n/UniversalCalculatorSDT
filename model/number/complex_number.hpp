@@ -8,15 +8,18 @@
 class ComplexNumber : public INumber
 {
 public:
+    ComplexNumber();
+    ComplexNumber(const std::string& str);
     ComplexNumber(double real, double imaginary);
+    ComplexNumber(std::complex<double> value);
 
 public:
-    const ComplexNumber& operator+(const INumber& rhs) const override;
-    const ComplexNumber& operator-(const INumber& rhs) const override;
-    const ComplexNumber& operator*(const INumber& rhs) const override;
-    const ComplexNumber& operator/(const INumber& rhs) const override;
+    std::unique_ptr<INumber> operator+(const INumber& rhs) const override;
+    std::unique_ptr<INumber> operator-(const INumber& rhs) const override;
+    std::unique_ptr<INumber> operator*(const INumber& rhs) const override;
+    std::unique_ptr<INumber> operator/(const INumber& rhs) const override;
 
-    const ComplexNumber& operator~() const override;
+    std::unique_ptr<INumber> operator~() const override;
 
     std::string value() const override;
 private:

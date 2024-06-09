@@ -48,3 +48,6 @@ function regexFromBase(base) {
                           `(\\^|~))$`)
     }
 }
+
+const regexFraction = new RegExp("")
+const regexComplex = new RegExp("\(([-+]?\d*\.?\d+)([-+]\d*\.?\d+)i\)([+\-*/])\(([-+]?\d*\.?\d+)([-+]\d*\.?\d+)i\)")

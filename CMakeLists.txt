@@ -20,13 +20,15 @@ set(HDR_FILES
         model/number/i_number.hpp
         model/number/complex_number.hpp
         model/number/fraction_number.hpp
-        model/number/real_number.hpp
+        model/number/p_number.hpp
         model/processor/processor.hpp
         model/exception/number_exception.hpp
         model/exception/calculation_exception.hpp
         model/exception/conversion_exception.hpp
         model/memory/memory.hpp
-        controller/controller.hpp
+        controller/complex_number_controller.hpp
+        controller/fraction_number_controller.hpp
+        controller/p_number_controller.hpp
 )
 set(SRC_FILES
         main.cpp
@@ -35,13 +37,15 @@ set(SRC_FILES
         model/editor/editor.cpp
         model/number/complex_number.cpp
         model/number/fraction_number.cpp
-        model/number/real_number.cpp
-        model/processor/processor.cpp
+        model/number/p_number.cpp
+        model/processor/processor.inl
         model/exception/number_exception.cpp
         model/exception/calculation_exception.cpp
         model/exception/conversion_exception.cpp
-        model/memory/memory.cpp
-        controller/controller.cpp
+        model/memory/memory.inl
+        controller/complex_number_controller.cpp
+        controller/fraction_number_controller.cpp
+        controller/p_number_controller.cpp
 )
 
 qt_add_executable(${PROJECT_NAME}
@@ -59,7 +63,7 @@ qt_add_qml_module(${PROJECT_NAME}
         view/components/TopPanel.qml
         view/conversion.js
         view/pages/MainPage.qml
-        view/pages/ReferencePage.qml 
+        view/pages/ReferencePage.qml
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

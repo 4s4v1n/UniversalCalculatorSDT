@@ -8,6 +8,21 @@ Rectangle {
     property alias inputValue: number_line.text
     property alias inputBase: base_spinbox.value
     property alias numberLine: number_line
+    property string numberType
+
+    function disableControls() {
+       base_spinbox.enabled = false
+       base_slider.enabled = false
+       accuracy_spinbox.enabled = false
+       accuracy_slider.enabled = false
+    }
+
+    function enableControls() {
+        base_spinbox.enabled = true
+        base_slider.enabled = true
+        accuracy_spinbox.enabled = true
+        accuracy_slider.enabled = true
+    }
 
     signal outputBaseValueChanged()
 
@@ -28,6 +43,10 @@ Rectangle {
         Layout.fillWidth: true
     }
 
+    onNumberTypeChanged: {
+        number_line.text = ""
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -39,14 +58,32 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignHCenter
             validator: RegularExpressionValidator {
-                regularExpression: Conversion.regexFromBase(base_slider.value)
+                regularExpression: {
+                    if (numberType === "pNumber") {
+                        return Conversion.regexFromBase(base_slider.value)
+                    } else if (numberType === "fractionNumber") {
+                        return Conversion.regexFraction
+                    } else {
+                        return Conversion.regexComplex
+                    }
+                }
             }
 
             Layout.fillWidth: true
             Layout.fillHeight: true
 
             onTextChanged: {
-                Controller.setExpression(text);
+                switch (numberType) {
+                case "pNumber":
+                    pNumberController.setExpression(text);
+                    break;
+                case "fractionNumber":
+                    fractionNumberController.setExpression(text);
+                    break;
+                case "complexNumber":
+                    complexNumberController.setExpression(text);
+                    break;
+                }
             }
         }
 
@@ -70,11 +107,11 @@ Rectangle {
 
                 onValueChanged: {
                     base_slider.value = value
-                    Controller.setBase(value)
+                    pNumberController.setBase(value)
                 }
 
                 Component.onCompleted: {
-                    Controller.setBase(value)
+                    pNumberController.setBase(value)
                 }
             }
 
@@ -103,11 +140,11 @@ Rectangle {
 
                 onValueChanged: {
                     accuracy_slider.value = value
-                    Controller.setAccuracy(value)
+                    pNumberController.setAccuracy(value)
                 }
 
                 Component.onCompleted: {
-                    Controller.setAccuracy(value)
+                    pNumberController.setAccuracy(value)
                 }
             }
 

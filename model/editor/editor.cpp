@@ -43,10 +43,6 @@ int Editor::getAccuracy() const
 
 void Editor::addExpression(const std::string &expression)
 {
-    if (!m_valid_expressions.contains(expression))
-    {
-        throw NumberException{"symbol is out of range"};
-    }
     m_expression += expression;
 }
 
@@ -66,12 +62,5 @@ void Editor::clearAll()
 
 void Editor::resetExpression(const std::string& expression)
 {
-    for (const auto& token : expression)
-    {
-        if (!m_valid_expressions.contains(std::string{token}))
-        {
-            throw NumberException{"symbol is out of range"};
-        }
-    }
     m_expression = expression;
 }

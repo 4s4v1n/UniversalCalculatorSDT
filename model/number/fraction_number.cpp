@@ -2,7 +2,17 @@
 
 #include "../exception/calculation_exception.hpp"
 
-FractionNumber::FractionNumber(double numerator, double denominator):
+FractionNumber::FractionNumber() :
+    m_numerator(0),
+    m_denominator(0)
+{}
+
+FractionNumber::FractionNumber(const std::pair<int, int>& pair) :
+    m_numerator(pair.first),
+    m_denominator(pair.second)
+{}
+
+FractionNumber::FractionNumber(int numerator, int denominator) :
     m_numerator(denominator < 0 ? -numerator : numerator),
     m_denominator(denominator < 0 ? -denominator : denominator)
 {}
@@ -15,39 +25,39 @@ void FractionNumber::checkIsZero(const FractionNumber& lhs) const
     }
 }
 
-const FractionNumber& FractionNumber::operator+(const INumber& rhs) const
+std::unique_ptr<INumber> FractionNumber::operator+(const INumber& rhs) const
 {
     auto fn_rhs = dynamic_cast<const FractionNumber&>(rhs);
-    return FractionNumber(m_numerator * fn_rhs.m_denominator + fn_rhs.m_numerator * m_denominator,
+    return std::make_unique<FractionNumber>(m_numerator * fn_rhs.m_denominator + fn_rhs.m_numerator * m_denominator,
                           m_denominator * fn_rhs.m_denominator);
 }
 
-const FractionNumber& FractionNumber::operator-(const INumber& rhs) const
+std::unique_ptr<INumber> FractionNumber::operator-(const INumber& rhs) const
 {
     auto fn_rhs = dynamic_cast<const FractionNumber&>(rhs);
-    return FractionNumber(m_numerator * fn_rhs.m_denominator - fn_rhs.m_numerator * m_denominator,
+    return std::make_unique<FractionNumber>(m_numerator * fn_rhs.m_denominator - fn_rhs.m_numerator * m_denominator,
                           m_denominator * fn_rhs.m_denominator);
 }
 
-const FractionNumber& FractionNumber::operator*(const INumber& rhs) const
+std::unique_ptr<INumber> FractionNumber::operator*(const INumber& rhs) const
 {
     auto fn_rhs = dynamic_cast<const FractionNumber&>(rhs);
-    return FractionNumber(m_numerator * fn_rhs.m_numerator, m_denominator * fn_rhs.m_denominator);
+    return std::make_unique<FractionNumber>(m_numerator * fn_rhs.m_numerator, m_denominator * fn_rhs.m_denominator);
 }
 
-const FractionNumber& FractionNumber::operator/(const INumber& rhs) const
+std::unique_ptr<INumber> FractionNumber::operator/(const INumber& rhs) const
 {
     auto fn_rhs = dynamic_cast<const FractionNumber&>(rhs);
     checkIsZero(fn_rhs);
-    return FractionNumber(m_numerator * fn_rhs.m_denominator, m_denominator * fn_rhs.m_numerator);
+    return std::make_unique<FractionNumber>(m_numerator * fn_rhs.m_denominator, m_denominator * fn_rhs.m_numerator);
 }
 
-const FractionNumber& FractionNumber::operator~() const
+std::unique_ptr<INumber> FractionNumber::operator~() const
 {
-    return FractionNumber(m_denominator, m_numerator);
+    return std::make_unique<FractionNumber>(m_denominator, m_numerator);
 }
 
 std::string FractionNumber::value() const
 {
-    return std::to_string(m_numerator) + "/" + std::to_string(m_denominator);
+    return "(" + std::to_string(m_numerator) + "/" + std::to_string(m_denominator) + ")";
 }

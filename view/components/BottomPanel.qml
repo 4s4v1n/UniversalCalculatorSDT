@@ -8,6 +8,7 @@ import "../conversion.js" as Conversion
 Item {
     property string inputValue
     property int inputBase
+    property string currentNumberType
 
     signal textButtonClicked(string text)
     signal clearEntryButtonClicked
@@ -17,6 +18,9 @@ Item {
     signal memorySaveClicked
     signal memoryAddClicked
     signal memoryClearClicked
+    signal numberTypeChanged(string numberType)
+
+    id: root
 
     GridLayout {
         id: grid_layout
@@ -217,6 +221,26 @@ Item {
             text: "="
 
             onClicked: calculateButtonClicked()
+        }
+
+        ComboBox {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            model: ListModel {
+                ListElement {
+                    text: "complexNumber"
+                }
+                ListElement {
+                    text: "pNumber"
+                }
+                ListElement {
+                    text: "fractionNumber"
+                }
+            }
+            onCurrentTextChanged: {
+                numberTypeChanged(currentText)
+            }
         }
     }
 }

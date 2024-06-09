@@ -3,6 +3,7 @@
 
 #include "../number/i_number.hpp"
 
+template <typename T>
 class Processor
 {
 public:
@@ -17,24 +18,19 @@ public:
         Reverse
     };
 
-private:
-    Processor() = default;
-    ~Processor() = default;
-
-public:
-    static Processor* getInstance();
-
 public:
     void setOperator(Operator op);
     void setOperator(const std::string& op);
-    void setLhs(const RealNumber& lhs);
-    void setRhs(const RealNumber& rhs);
-    RealNumber execute();
+    void setLhs(const T& lhs);
+    void setRhs(const T& rhs);
+    std::unique_ptr<INumber> execute();
 
 private:
     Operator m_operator {Operator::None};
-    INumber  m_lhs      {0., 0, 0};
-    INumber  m_rhs      {0., 0, 0};
+    std::unique_ptr<T> m_lhs;
+    std::unique_ptr<T> m_rhs;
 };
+
+#include "processor.inl"
 
 #endif // PROCESSOR_HPP
